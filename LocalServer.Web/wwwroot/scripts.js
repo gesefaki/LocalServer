@@ -2,10 +2,15 @@ const API_URL = "http://192.168.0.158:5144/api/files";
 
 const filesTable = document.getElementById("filesTable");
 const tableBody = document.getElementById("tableBody");
+const fileInputForm = document.getElementById("fileInputForm");
 
 let currentFiles = [];
 
 document.addEventListener("DOMContentLoaded", getFiles);
+fileInputForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  await uploadFile(event).then(() => getFiles());
+});
 
 async function getFiles() {
   tableBody.innerHTML = "";
@@ -16,7 +21,9 @@ async function getFiles() {
     const files = await response.json();
 
     renderTable(files);
-  } catch (err) {}
+  } catch (err) {
+    console.error(`HTTP ERROR: ${err}`);
+  }
 }
 
 function renderTable(files) {
@@ -52,6 +59,30 @@ function renderTable(files) {
       deleteFile(id);
     });
   });
+}
+
+async function uploadFile(event) {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("dobav file bistro");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const response = await fetch(`${API_URL}/`, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) throw new Error(`HTTP ERROR: ${response.status}`);
+  } catch (err) {
+    console.error(`CREATE ERROR: ${err}`);
+  }
 }
 
 async function downloadFile(fileId, fileName) {

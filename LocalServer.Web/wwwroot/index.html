@@ -10,21 +10,28 @@
       <div class="container"></div>
     </header>
     <main>
-      <section>
-        <table id="filesTable" class="files-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>FileName</th>
-              <th>ContentType</th>
-              <th>Size</th>
-              <th>SavePath</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </section>
+      <div class="conitainer">
+        <section>
+          <table id="filesTable" class="files-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>FileName</th>
+                <th>ContentType</th>
+                <th>Size</th>
+                <th>SavePath</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+
+          <form id="fileInputForm">
+            <input type="file" id="fileInput" />
+            <button id="submitBtn" type="submit">Send</button>
+          </form>
+        </section>
+      </div>
     </main>
     <script src="scripts.js"></script>
   </body>

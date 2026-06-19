@@ -13,8 +13,9 @@ public class FilesController : ControllerBase
     private readonly string _url = "http://localhost:5000/";
     private readonly FileService _fileService = new();
 
+    // POST: http://localhost:5144/api/files
     [HttpPost]
-    public async Task<ActionResult> Upload(IFormFile file, CancellationToken cancellationToken)
+    public async Task<IActionResult> Upload(IFormFile file, CancellationToken cancellationToken)
     {
         using var http = new HttpClient();
 
@@ -33,7 +34,7 @@ public class FilesController : ControllerBase
 
         await http.PostAsync(_url, content, cancellationToken);
 
-        return Ok();
+        return new CreatedResult(string.Empty, null);
     }
 
     // GET: http://localhost:5144/api/files
