@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalServer.Web", "LocalServer.Web\LocalServer.Web.csproj", "{830EB9ED-2F04-48AF-BFE1-5D345D1A730E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalServer.Server", "LocalServer.Server\LocalServer.Server.csproj", "{FA72B147-D328-4F5E-B5EA-144DEEC63113}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{830EB9ED-2F04-48AF-BFE1-5D345D1A730E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{830EB9ED-2F04-48AF-BFE1-5D345D1A730E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{830EB9ED-2F04-48AF-BFE1-5D345D1A730E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{830EB9ED-2F04-48AF-BFE1-5D345D1A730E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA72B147-D328-4F5E-B5EA-144DEEC63113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA72B147-D328-4F5E-B5EA-144DEEC63113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA72B147-D328-4F5E-B5EA-144DEEC63113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA72B147-D328-4F5E-B5EA-144DEEC63113}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
