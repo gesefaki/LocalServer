@@ -12,6 +12,7 @@ public class FileRepository
     public FileRepository(string connectionString = "Data Source=files.db")
     {
         _connectionString = connectionString;
+        InitializeDatabase();
     }
 
     private IDbConnection CreateConnection()
@@ -19,7 +20,7 @@ public class FileRepository
         return new SqliteConnection(_connectionString);
     }
 
-    public async Task InitializeDatabaseAsync()
+    public void InitializeDatabase()
     {
         using var connection = CreateConnection();
 
@@ -32,7 +33,7 @@ public class FileRepository
             save_path TEXT NOT NULL
         )";
 
-        await connection.ExecuteAsync(sql);
+        connection.Execute(sql);
     }
 
     public async Task<int> SaveFileAsync(FileModel fileModel)
