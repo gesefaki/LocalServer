@@ -15,4 +15,16 @@ public static class FileHelper
             Size = file.Size
         };
     }
+
+    public static int GetIndexFromRequest(string url)
+    {
+        if (url.Length > 0 && char.IsDigit(url[^1]))
+        {
+            var splittedUrl = url.Split('/');
+            int.TryParse(splittedUrl[^1], out var index);
+            return index;
+        }
+        return -1;
+    }
+
 }

@@ -12,12 +12,18 @@ public class FilesController : ControllerBase
 {
     private readonly string _url = "http://localhost:5000/";
     private readonly FileService _fileService = new();
+    private readonly IHttpClientFactory _http;
+
+    public FilesController(IHttpClientFactory http)
+    {
+        _http = http;
+    }
 
     // POST: http://localhost:5144/api/files
     [HttpPost]
     public async Task<IActionResult> Upload(IFormFile file, CancellationToken cancellationToken)
     {
-        using var http = new HttpClient();
+        using var http = _http.CreateClient();
 
         await using var stream = file.OpenReadStream();
         using var ms = new MemoryStream();

@@ -18,6 +18,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient();
+
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(System.Net.IPAddress.Any, 5144);

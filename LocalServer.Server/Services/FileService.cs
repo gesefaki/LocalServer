@@ -1,7 +1,7 @@
 ﻿using System.Net;
-using LocalServer.Server.Data.Database;
 using LocalServer.Server.Helpers;
 using LocalServer.Server.Models;
+using LocalServer.Server.Repository;
 
 namespace LocalServer.Server.Services;
 
@@ -9,7 +9,7 @@ public class FileService
 {
     private readonly string _saveDirPath = "C:\\Users\\gesefaki\\RiderProjects\\LocalServer\\data\\";
 
-    private readonly FileDb _db = new FileDb("data.db");
+    private readonly FileRepository _db = new();
 
     public async Task<FileModel> CreateRequestModelFromHttpAsync(HttpListenerRequest request)
     {
@@ -32,7 +32,7 @@ public class FileService
         return fileModel;
     }
 
-    private async Task<byte[]> ParseRawDataAsync(Stream inputStream)
+    public async Task<byte[]> ParseRawDataAsync(Stream inputStream)
     {
         using var ms = new MemoryStream();
         await inputStream.CopyToAsync(ms);
@@ -63,6 +63,11 @@ public class FileService
     {
         var blobInfo = await _db.GetBlobInfoAsync(id);
 
+        if (blobInfo == null)
+        {
+            throw new ArgumentException("File not found");
+        }
+
         byte[] fileData = await File.ReadAllBytesAsync(blobInfo.SavePath);
 
         string contentType = blobInfo.ContentType;
@@ -76,6 +81,11 @@ public class FileService
     public async Task DeleteAsync(int id)
     {
         var file = await _db.GetByIdAsync(id);
+
+        if (file == null)
+        {
+            throw new ArgumentException("File not found");
+        }
 
         try
         {
