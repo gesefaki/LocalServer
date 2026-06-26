@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using LocalServer.Server.Models;
-using LocalServer.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LocalServer.Controllers;
@@ -37,7 +36,7 @@ public class FilesController : ControllerBase
         http.DefaultRequestHeaders.Add("X-Original-Filename", file.FileName);
         http.DefaultRequestHeaders.Add("X-File-Size", file.Length.ToString());
 
-        await http.PostAsync(_url, content, cancellationToken);
+        var response = await http.PostAsync(_url, content, cancellationToken);
 
         return new CreatedResult(string.Empty, null);
     }

@@ -1,13 +1,195 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
+:root {
+    /* Colors */
+    --background: #f6f8fa;
+    --surface: #ffffff;
+
+    --text: #1f2328;
+    --text-secondary: #656d76;
+
+    --border: #d0d7de;
+
+    --primary: #2da44e;
+    --primary-hover: #218b3a;
+
+    --danger: #cf222e;
+    --danger-hover: #a40e26;
+
+    /* Radius */
+    --radius: 12px;
+
+    /* Shadows */
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    /* Layout */
+    --container-width: 1100px;
+
+    /* Animation */
+    --transition: .2s ease;
 }
 
-table {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, Segoe UI, Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+.app {
+    max-width: var(--container-width);
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+}
+
+.card h2 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.upload-form {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.file-picker {
+    flex: 1;
+    cursor: pointer;
+    padding: 14px 18px;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    transition: var(--transition);
+}
+
+.file-picker:hover {
+    border-color: var(--primary);
+}
+
+.file-picker input {
+    display: none;
+}
+
+.file-picker span {
+    color: var(--text-secondary);
+}
+
+.primary-btn {
+    border: none;
+    cursor: pointer;
+    background: var(--primary);
+    color: white;
+    padding: 14px 24px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.primary-btn:hover {
+    background: var(--primary-hover);
+}
+
+.primary-btn:active {
+    transform: scale(0.97);
+}
+
+.files-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-table th, td {
-    padding: 20px;
-    border: 1px solid black;
+.files-table thead {
+    border-bottom: 2px solid var(--border);
+}
+
+.files-table th, .files-table td {
+    padding: 18px 12px;
+    text-align: left;
+}
+
+.files-table th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.files-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.files-table tbody tr:hover {
+    background: rgba(0,0,0,0.25);
+}
+
+#toastContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+}
+
+.toast {
+    min-width: 260px;
+    padding: 16px;
+    border-radius: 12px;
+    color: white;
+    animation: slide .25s ease;
+}
+
+.toast.success {
+    background: var(--primary);
+}
+
+.toast.error {
+    background: var(--danger);
+}
+
+.action-btn {
+    width: 38px;
+}
+
+@keyframes slide {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }

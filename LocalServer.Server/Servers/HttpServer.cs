@@ -12,7 +12,6 @@ public class HttpServer : IHostedService, IDisposable
 {
     private HttpListener? _httpListener;
     private CancellationTokenSource? _cts;
-
     private readonly FileService _fileService = new();
 
     private const string Url = "http://localhost:5000/";
@@ -40,6 +39,7 @@ public class HttpServer : IHostedService, IDisposable
             {
                 var context = await _httpListener!.GetContextAsync();
                 var request = context.Request;
+                var response = context.Response;
 
                 if (request.Headers.AllKeys.Contains("X-Request-Type"))
                 {
@@ -49,6 +49,9 @@ public class HttpServer : IHostedService, IDisposable
                     {
                         case "POST":
                             await _fileService.UploadFileAsync(fileModel);
+
+                            response.StatusCode = (int)HttpStatusCode.Created;
+                            response.Close();
                             break;
 
                         case "GET":
@@ -57,10 +60,10 @@ public class HttpServer : IHostedService, IDisposable
                             {
                                 byte[] buffer = await _fileService.ParseRawDataAsync(blob.Stream);
 
-                                context.Response.ContentType = blob.ContentType;
-                                context.Response.ContentLength64 = blob.Stream.Length;
-                                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                                context.Response.Close();
+                                response.ContentType = blob.ContentType;
+                                response.ContentLength64 = blob.Stream.Length;
+                                response.OutputStream.Write(buffer, 0, buffer.Length);
+                                response.Close();
 
                                 break;
                             }
@@ -69,16 +72,18 @@ public class HttpServer : IHostedService, IDisposable
                                 string json = JsonSerializer.Serialize(files);
                                 byte[] buffer = Encoding.UTF8.GetBytes(json);
 
-                                context.Response.ContentType = "application/json";
-                                context.Response.ContentLength64 = buffer.Length;
-                                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                                context.Response.Close();
+                                response.ContentType = "application/json";
+                                response.ContentLength64 = buffer.Length;
+                                response.OutputStream.Write(buffer, 0, buffer.Length);
+                                response.Close();
 
                                 break;
                             }
                             break;
                         case "DELETE":
                             await HandleDeleteRequest(request);
+                            response.StatusCode = (int)HttpStatusCode.NoContent;
+                            response.Close();
                             break;
                         default:
                             continue;
@@ -98,6 +103,7 @@ public class HttpServer : IHostedService, IDisposable
         {
             Console.WriteLine("[HTTP_SERVER_ERROR] Error: " + ex.Message);
         }
+
     }
 
     private async Task<(BlobInfoResponse?, List<FileResponse>?)> HandleGetRequest(HttpListenerRequest request)

@@ -1,38 +1,55 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Local Server. File Storage</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <div class="container"></div>
-    </header>
-    <main>
-      <div class="conitainer">
-        <section>
-          <table id="filesTable" class="files-table">
+    <div class="app">
+      <!-- Header Section-->
+      <header class="header">
+        <h1>File Storage</h1>
+        <p class="subtitle">Upload and download your files</p>
+      </header>
+
+      <!-- Main Section-->
+      <main>
+        <!-- Upload card -->
+        <section class="card">
+          <h2>Upload file</h2>
+          <form id="fileInputForm" class="upload-form">
+            <label class="file-picker">
+              <input id="fileInput" type="file" />
+              <span id="selectedFile">No file selected</span>
+            </label>
+            <button id="submitBtn" class="primary-btn" type="submit">
+              Upload
+            </button>
+          </form>
+        </section>
+
+        <!-- Files card -->
+        <section class="card">
+          <h2>Files</h2>
+
+          <!-- Files table -->
+          <table class="files-table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>FileName</th>
-                <th>ContentType</th>
+                <th>Name</th>
+                <th>Type</th>
                 <th>Size</th>
-                <th>SavePath</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody id="tableBody"></tbody>
           </table>
-
-          <form id="fileInputForm">
-            <input type="file" id="fileInput" />
-            <button id="submitBtn" type="submit">Send</button>
-          </form>
         </section>
-      </div>
-    </main>
-    <script src="scripts.js"></script>
+      </main>
+    </div>
+    <div id="toastContainer"></div>
+    <script type="module" src="./js/main.js"></script>
   </body>
 </html>
