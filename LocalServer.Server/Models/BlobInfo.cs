@@ -1,3 +1,7 @@
 namespace LocalServer.Server.Models;
 
-public record BlobInfo(string ContentType, string SavePath);
+public class BlobInfo
+{
+    public string ContentType { get; set; } = string.Empty;
+    public string SavePath { get; set; } = string.Empty;
+}

@@ -15,7 +15,7 @@ public class FileRepository
         InitializeDatabase();
     }
 
-    private IDbConnection CreateConnection()
+    private SqliteConnection CreateConnection()
     {
         return new SqliteConnection(_connectionString);
     }
@@ -25,12 +25,12 @@ public class FileRepository
         using var connection = CreateConnection();
 
         string sql = @"CREATE TABLE IF NOT EXISTS Files(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            filename TEXT NOT NULL,
-            content_type TEXT NOT NULL,
-            method TEXT NOT NULL,
-            size INT64 NOT NULL,
-            save_path TEXT NOT NULL
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Filename TEXT NOT NULL,
+            ContentType TEXT NOT NULL,
+            Method TEXT NOT NULL,
+            Size INT64 NOT NULL,
+            SavePath TEXT NOT NULL
         )";
 
         connection.Execute(sql);
@@ -40,9 +40,9 @@ public class FileRepository
     {
         using var connection = CreateConnection();
         string sql = @"
-        INSERT INTO Files (filename, content_type, method, size, save_path)
-        VALUES (@FileName, @ContentType, @Method, @Size, @SavePath)
-        SELECT last_insert_rowid()";
+        INSERT INTO Files (FileName, ContentType, Method, Size, SavePath)
+        VALUES (@FileName, @ContentType, @Method, @Size, @SavePath);
+        SELECT last_insert_rowid();";
 
         return await connection.ExecuteScalarAsync<int>(sql, fileModel);
     }
@@ -54,29 +54,29 @@ public class FileRepository
         return await connection.QueryAsync<FileModel>(sql);
     }
 
-    public async Task<BlobInfo?> GetBlobInfoAsync(int id)
+    public async Task<BlobInfo> GetBlobInfoAsync(int id)
     {
         using var connection = CreateConnection();
-        string sql = @"SELECT content_type, save_path FROM Files WHERE @id = id";
+        string sql = @"SELECT ContentType, SavePath FROM Files WHERE id = @id";
 
-        return await connection.QueryFirstOrDefaultAsync<BlobInfo>(sql, new { @id = id });
+        return await connection.QueryFirstOrDefaultAsync<BlobInfo>(sql, new { id }) ?? throw new ArgumentException($"Item with id {id} not found");
     }
 
     public async Task<FileModel?> GetByIdAsync(int id)
     {
         using var connection = CreateConnection();
-        string sql = @"SELECT * FROM Files WHERE @id = id LIMIT 1";
+        string sql = @"SELECT * FROM Files WHERE Id = @id LIMIT 1";
 
-        return await connection.QueryFirstOrDefaultAsync<FileModel>(sql, new { @id = id });
+        return await connection.QueryFirstOrDefaultAsync<FileModel>(sql, new { id });
     }
 
     public async Task<bool> TryDeleteAsync(int id)
     {
         using var connection = CreateConnection();
 
-        string sql = @"DELETE FROM Files WHERE @id = id";
+        string sql = @"DELETE FROM Files WHERE Id = @id";
 
-        var affectedRows = await connection.ExecuteAsync(sql, new { @id = id });
+        var affectedRows = await connection.ExecuteAsync(sql, new { id });
         return affectedRows > 0;
     }
 

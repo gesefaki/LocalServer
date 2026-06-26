@@ -18,7 +18,11 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("DefaultClient", client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5000/");
+    client.DefaultRequestHeaders.Add("X-Request-Type", "specific-request");
+});
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {

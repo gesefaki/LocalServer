@@ -7,7 +7,7 @@ namespace LocalServer.Server.Services;
 
 public class FileService
 {
-    private readonly string _saveDirPath = "C:\\Users\\gesefaki\\RiderProjects\\LocalServer\\data\\";
+    private readonly string _saveDirPath = "C:\\Users\\gesefaki\\RiderProjects\\LocalServer\\LocalServer.Server\\data\\";
 
     private readonly FileRepository _db = new();
 

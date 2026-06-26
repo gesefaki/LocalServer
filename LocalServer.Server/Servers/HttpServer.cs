@@ -57,7 +57,7 @@ public class HttpServer : IHostedService, IDisposable
                             {
                                 byte[] buffer = await _fileService.ParseRawDataAsync(blob.Stream);
 
-                                context.Response.ContentType = "application/octet-stream";
+                                context.Response.ContentType = blob.ContentType;
                                 context.Response.ContentLength64 = blob.Stream.Length;
                                 context.Response.OutputStream.Write(buffer, 0, buffer.Length);
                                 context.Response.Close();
@@ -76,6 +76,9 @@ public class HttpServer : IHostedService, IDisposable
 
                                 break;
                             }
+                            break;
+                        case "DELETE":
+                            await HandleDeleteRequest(request);
                             break;
                         default:
                             continue;
@@ -97,7 +100,7 @@ public class HttpServer : IHostedService, IDisposable
         }
     }
 
-    private async Task<(BlobInfoResponse? singleResponse, List<FileResponse>? multiplyResponse)> HandleGetRequest(HttpListenerRequest request)
+    private async Task<(BlobInfoResponse?, List<FileResponse>?)> HandleGetRequest(HttpListenerRequest request)
     {
         int index = FileHelper.GetIndexFromRequest(request.RawUrl!);
         if (index > 0)
@@ -106,7 +109,18 @@ public class HttpServer : IHostedService, IDisposable
             return (file, null);
         }
         var files = await _fileService.GetAllAsync();
-        return (null, (List<FileResponse>)files);
+        var filesList = files.ToList();
+        return (null, filesList);
+    }
+
+    private async Task HandleDeleteRequest(HttpListenerRequest request)
+    {
+        int index = FileHelper.GetIndexFromRequest(request.RawUrl!);
+        if (index > 0)
+        {
+            await _fileService.DeleteAsync(index);
+        }
+        return;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
