@@ -4,7 +4,7 @@ using Microsoft.Data.Sqlite;
 
 namespace LocalServer.Server.Repository;
 
-public class FileRepository
+public class FileRepository : IFileRepository
 {
     private readonly string _connectionString;
 
@@ -19,7 +19,7 @@ public class FileRepository
         return new SqliteConnection(_connectionString);
     }
 
-    public void InitializeDatabase()
+    private void InitializeDatabase()
     {
         using var connection = CreateConnection();
 

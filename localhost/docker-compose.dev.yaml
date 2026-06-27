@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   backend:
     build:
-      context: ./backend/src
+      context: ../backend/src
       dockerfile: LocalServer.Web/Dockerfile
     container_name: local-server-api
     ports:
@@ -20,13 +18,13 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: infrastructure/nginx/Dockerfile
+      context: ../
+      dockerfile: infrastructure/nginx/Dockerfile.dev
     container_name: local-server-nginx
+    volumes:
+      - ../frontend/public:/usr/share/nginx/html
     ports:
       - "80:80"
-    depends_on:
-      - backend
     restart: unless-stopped
     networks:
       - app-network

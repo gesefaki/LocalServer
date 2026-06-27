@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.0.158:5144/api/files";
+const API_URL = "/api/files";
 
 // extracting common request logic
 async function request(url, options = {}) {

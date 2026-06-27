@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: ../backend/src
+      dockerfile: LocalServer.Web/Dockerfile
+    container_name: local-server-api
+    ports:
+      - "5144:5144"
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - WEB_PORT=5144
+      - HTTP_PORT=5000
+      - HTTP_SERVER_URL=http://0.0.0.0:5000/
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ../
+      dockerfile: infrastructure/nginx/Dockerfile
+    container_name: local-server-nginx
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

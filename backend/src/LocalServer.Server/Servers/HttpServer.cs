@@ -12,9 +12,14 @@ public class HttpServer : IHostedService, IDisposable
 {
     private HttpListener? _httpListener;
     private CancellationTokenSource? _cts;
-    private readonly FileService _fileService = new();
+    private readonly IFileService _fileService;
 
     private const string Url = "http://localhost:5000/";
+
+    public HttpServer(IFileService fileService)
+    {
+        _fileService = fileService;
+    }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {

@@ -1,4 +1,6 @@
+using LocalServer.Server.Repository;
 using LocalServer.Server.Servers;
+using LocalServer.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<HttpServer>();
+
 builder.Services.AddHostedService(sp => sp.GetRequiredService<HttpServer>());
 
 builder.Services.AddCors(options =>
@@ -17,6 +20,9 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin();
     });
 });
+
+builder.Services.AddSingleton<IFileRepository, FileRepository>();
+builder.Services.AddSingleton<IFileService, FileService>();
 
 builder.Services.AddHttpClient("DefaultClient", client =>
 {

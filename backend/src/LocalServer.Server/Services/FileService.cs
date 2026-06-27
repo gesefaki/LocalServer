@@ -2,14 +2,43 @@
 using LocalServer.Server.Helpers;
 using LocalServer.Server.Models;
 using LocalServer.Server.Repository;
+using LocalServer.Server.Utils;
 
 namespace LocalServer.Server.Services;
 
-public class FileService
+public class FileService : IFileService
 {
-    private readonly string _saveDirPath = "C:\\Users\\gesefaki\\RiderProjects\\LocalServer\\LocalServer.Server\\data\\";
+    private readonly string _saveDirPath;
 
-    private readonly FileRepository _db = new();
+    private readonly IFileRepository _db;
+
+    public FileService(IFileRepository db)
+    {
+        string dataPath = PathUtil
+            .GetProjectDirectory()
+            .GetParentPath()
+            .Combine("data/");
+
+        _saveDirPath = dataPath;
+
+        if (!Directory.Exists(dataPath))
+        {
+            try
+            {
+                Console.WriteLine("[FILE_SERVICE_DIRECTORY] Data directory not found. Creating in address " + _saveDirPath);
+                Directory.CreateDirectory(dataPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("[FILE_SERVICE_DIRECTORY_ERROR] Cannot create directory!");
+                throw new InvalidOperationException(ex.Message);
+            }
+        }
+
+        Console.WriteLine("[FILE_SERVICE_DIRECTORY] Data Directory: " + _saveDirPath);
+
+        _db = db;
+    }
 
     public async Task<FileModel> CreateRequestModelFromHttpAsync(HttpListenerRequest request)
     {
