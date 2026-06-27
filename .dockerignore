@@ -1,0 +1,36 @@
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build
+**/bin/
+**/obj/
+**/publish/
+**/Debug/
+**/Release/
+
+# Logs
+**/*.log
+**/logs/
+
+# Node
+node_modules/
+npm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
