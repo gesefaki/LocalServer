@@ -8,16 +8,16 @@ function createRow(file) {
         <td>${formatSize(file.size)}</td>
         <td>
             <button
-                class="download"
+                class="action-btn download"
                 data-id="${file.id}"
                 data-name="${file.fileName}">
-            Download
+            <i class="fi fi-rr-download"></i>
             </button>
 
             <button
-                class="delete"
+                class="action-btn delete"
                 data-id="${file.id}">
-            Delete
+            <i class="fi fi-rr-trash"></i>
             </button>
         </td>
     </tr>
@@ -25,5 +25,16 @@ function createRow(file) {
 }
 
 export function renderFiles(files, tableBody) {
+  console.log(typeof files);
+  if (!files || files.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; padding: 20px;">
+          No uploaded files
+        </td>
+      </tr>
+    `;
+    return;
+  }
   tableBody.innerHTML = files.map(createRow).join("");
 }

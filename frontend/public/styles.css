@@ -180,8 +180,28 @@ main {
 }
 
 .action-btn {
-    width: 38px;
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 12px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: var(--transition);
 }
+
+.action-btn.download:hover {
+    background: var(--primary-hover);
+    color: white;
+}
+
+.action-btn.delete:hover {
+    background: var(--danger-hover);
+    color: white;
+}
+
 
 @keyframes slide {
     from {

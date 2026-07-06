@@ -51,10 +51,8 @@ public class FilesController : ControllerBase
         var response = await http.GetAsync(_url, cancellationToken);
 
         var json = await response.Content.ReadAsStringAsync();
-        return Ok(JsonSerializer.Deserialize<List<FileResponse>>(json, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        }) ?? new List<FileResponse>());
+        var data = JsonSerializer.Deserialize<List<FileResponse>>(json);
+        return Ok(data);
     }
 
     // GET: http://localhost:5144/api/files/{id}
